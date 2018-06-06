@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+
+<link rel="stylesheet" th:href="@{/webjars/bootstrap/4.1.0/css/bootstrap.min.css}" >
+<script th:src="@{/webjars/jquery/3.2.1/jquery.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/4.1.0/js/bootstrap.min.js}"></script>
+<title th:text="'Recipe for ' + ${recipe.description}">Recipe for -</title>
+</head>
+<body>
+	<h2 th:text="${recipe.description}">description</h2>
+	
+	Categories
+	<ul th:each="cat : ${recipe.categories}">
+		<li th:text="${cat.categoryName}"></li>
+	</ul>
+	Difficulty : <span th:text="${recipe.difficulty.label}">-</span>
+	<p th:text="${recipe.directions}">directions</p>
+	
+	<div>
+		<p>Ingredients</p>
+		<ul th:each="ing : ${recipe.ingredients}">
+			<li th:text="${ing.description} + ' ' + ${ing.amount} + ' ' + ${ing.unitOfMeasure.measure}">
+		</ul>
+	</div>
+</body>
+</html>
