@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 import guru.springframework.model.Category;
 
 @Repository
-public interface CategoryRepository extends CrudRepository<Category, Long>{
+public interface CategoryRepository extends CrudRepository<Category, String>{
 	Optional<Category> findByCategoryName(String description);
 }

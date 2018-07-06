@@ -2,52 +2,27 @@ package guru.springframework.model;
 
 import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Entity
+import lombok.Getter;
+import lombok.Setter;
+
+
+@Getter
+@Setter
+@Document
 public class Category {
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long id;
-	@Column(name="CATEGORY_NAME")
-	private String categoryName;
 	/*
-	 * The ManyToMany mappedBy value is the name that matches the Recipe's attribute. 
+	 * Note that the id is not a Long but a String
 	 */
-	@ManyToMany(mappedBy="categories")
+	private String id;
+	private String categoryName;
 	private Set<Recipe> recipes;
 
 	public Category() {
-	}
-	
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getCategoryName() {
-		return categoryName;
-	}
-
-	public void setCategoryName(String categoryName) {
-		this.categoryName = categoryName;
-	}
-	
-	public Set<Recipe> getRecipes() {
-		return recipes;
-	}
-
-	public void setRecipes(Set<Recipe> recipes) {
-		this.recipes = recipes;
 	}
 	
 	@Override

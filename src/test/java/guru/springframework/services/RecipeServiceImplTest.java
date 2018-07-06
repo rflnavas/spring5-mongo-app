@@ -13,6 +13,8 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import guru.springframework.command.converter.RecipeCommandToRecipe;
+import guru.springframework.command.converter.RecipeToRecipeCommand;
 import guru.springframework.model.Recipe;
 import guru.springframework.repositories.RecipeRepository;
 
@@ -23,18 +25,20 @@ import guru.springframework.repositories.RecipeRepository;
 public class RecipeServiceImplTest {
 
 	RecipeServiceImpl recipeService;
-	
+	RecipeCommandToRecipe recipeCommandToRecipe;
+	RecipeToRecipeCommand recipeToRecipeCommand;
 	/*
 	 * Since we need to inject the RecipeRepository we mark with the Mock annotation 
 	 */
 	@Mock
 	RecipeRepository recipeRepository;
 	
+	
 	@Before
 	public void setUp() throws Exception {
 		//Initializing mockito tests
 		MockitoAnnotations.initMocks(this);
-		recipeService = new RecipeServiceImpl(recipeRepository);
+		recipeService = new RecipeServiceImpl(recipeRepository, recipeCommandToRecipe, recipeToRecipeCommand);
 	}
 
 	@Test

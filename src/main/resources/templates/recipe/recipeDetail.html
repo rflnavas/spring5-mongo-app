@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+
+<link rel="stylesheet"
+	th:href="@{/webjars/bootstrap/4.1.0/css/bootstrap.min.css}">
+<script th:src="@{/webjars/jquery/3.2.1/jquery.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/4.1.0/js/bootstrap.min.js}"></script>
+<title th:text="'Recipe for ' + ${recipe.description}">Recipe
+	for -</title>
+</head>
+<body>
+	<div class="container-fluid">
+		<header>
+			<h1>Recipes App</h1>
+		</header>
+
+		<div class="col-md-3">
+			<h2 th:text="${recipe.description}">description</h2>
+		</div>
+		<div class="col-md-3">
+			<h5>Categories</h5>
+			<ul th:each="cat : ${recipe.categories}">
+				<li th:text="${cat.categoryName}"></li>
+			</ul>
+		</div>
+		<!-- /* 
+	Difficulty : <span th:text="${recipe.difficulty.label}">-</span>
+	<p th:text="${recipe.directions}">directions</p>
+	*/-->
+		<div class="col-md-3">
+			<h5>Ingredients</h5>
+			<ul th:each="ing : ${recipe.ingredients}">
+				<li
+					th:text="${ing.description} + ' ' + ${ing.amount} + ' ' + ${ing.unitOfMeasure.measure}">
+			</ul>
+		</div>
+
+		<div class="col-md-3">
+			<h5>Prep Time</h5>
+		</div>
+		<div class="col-md-3">
+			<p th:text="${(recipe.prepTime) +  '  Min'}">30 min</p>
+		</div>
+
+		<div class="col-md-3">
+			<h5>Servings:</h5>
+		</div>
+		<div class="col-md-3">
+			<p th:text="${(recipe.servings) + '  Min'}">20 min</p>
+		</div>
+		<div class="col-md-3">
+			<h5>Cooktime:</h5>
+		</div>
+		<div class="col-md-3">
+			<p th:text="${(recipe.cookTime  + '  Min')}">30 min</p>
+		</div>
+		<!-- /*This is how we create dynamic urls to point to the edit recipe form*/ -->
+		<a class="btn btn-default" th:href="@{/recipes/{id}/edit(id=${recipe.id})}" role="button">Edit</a>
+	</div>
+</body>
+</html>

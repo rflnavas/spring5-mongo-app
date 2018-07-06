@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<link rel="stylesheet" th:href="@{/webjars/bootstrap/4.1.0/css/bootstrap.min.css}" >
+<script th:src="@{//webjars/jquery/3.2.1/jquery.min.js}"></script>
+<script th:src="@{//webjars/bootstrap/4.1.0/js/bootstrap.min.js}"></script>
+<title>Recipe Home</title>
+</head>
+<body>
+	<h1>My Recipes!</h1>
+
+	<div th:if="${#lists.isEmpty(recipes)}">
+		No recipes yet...
+	</div>
+	<div class="table-responsive" th:if="${not #lists.isEmpty(recipes)}">
+		<p>These are all the recipes</p>
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th>Description</th>
+					<th>Difficulty</th>
+					<th>Prep. time</th>
+					<th>Actions</th>
+				</tr>
+			</thead>
+			<tr th:each="r : ${recipes}">
+	
+				<td th:text="${r.description}"></td>
+				<td th:text="${r.difficulty}"></td>
+				<td th:text="${r.prepTime}"></td>
+				<td><a th:href="@{/recipes/{id}(id=${r.id})}" href="#">View</a></td>
+			</tr>
+		</table>
+	</div>
+</body>
+</html>

@@ -8,22 +8,13 @@
 <title>Recipe Home</title>
 </head>
 <body>
+	<div class="container-fluid">
 	<h1>My Recipes!</h1>
-
-	<table>
-		<thead>
-			<tr>
-				<th>Description</th>
-				<th>Difficulty</th>
-				<th>Prep. time</th>
-			</tr>
-		</thead>
-		<tr th:each="r : ${recipes}">
-
-			<td th:text="${r.description}"></td>
-			<td th:text="${r.difficulty}"></td>
-			<td th:text="${r.prepTime}"></td>
-		</tr>
-	</table>
+	<div>
+		<p>
+			A place where you can find a wide range of international recipes to let you cook the most delicious dishes for you and your family and/or friends.
+		</p>
+	</div>
+	</div>
 </body>
 </html>

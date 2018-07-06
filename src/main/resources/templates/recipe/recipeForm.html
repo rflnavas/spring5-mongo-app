@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+
+<link rel="stylesheet"
+	th:href="@{/webjars/bootstrap/4.1.0/css/bootstrap.min.css}">
+<script th:src="@{/webjars/jquery/3.2.1/jquery.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/4.1.0/js/bootstrap.min.js}"></script>
+<title th:text="'Recipe for ' + ${recipe.description}">Recipe
+	for -</title>
+</head>
+<body>
+
+<div class="container-fluid">
+	<!--/* th:object is the POJO we bind to the form */-->
+	<form method="post" action="#" th:action="@{/recipes/}" th:object="${recipe}">
+		<!-- /*Don't forget this essential field or the update recipe will be treated as a fresh new save recipe.
+			By only giving this piece of data, Spring is smart enough to differentiate between these two operations*/ -->
+		<input type="hidden" th:field="*{id}"/>
+		<div class="row">
+			<label for="description">Description</label>
+			<!--/* Note the asterist in th:field. Such symbol makes thymeleaf to read as though it was read as recipe.description*/-->
+			<input type="text" name="description" class="form-control" placeholder="New description"
+				th:field="*{description}" />
+		</div>
+		
+		<div class="row">
+			<div class="form-group">
+				<label>Categories</label>
+			</div>
+			<div class="form-group">
+				<input type="checkbox" name="categories" value=""/>
+				Category 1
+				<input type="checkbox" name="categories" value=""/>
+				Category 2
+			</div>
+		</div>
+		
+		<div class="row">
+			<label for="prepTime">Prep Time</label> 
+				<input type="number" class="form-control"
+				name="prepTime" placeholder="Time to prepare" th:field="*{prepTime}" />
+
+			<label for="cookTime">Cook Time</label> 
+				<input type="number" class="form-control"
+				name="description" placeholder="Time to be cooked"
+				th:field="*{cookTime}" />
+
+			<div class="">
+				<label>Difficulty:</label> 
+				<select class="form-control">
+					<option>Easy</option>
+					<option>Moderate</option>
+					<option>Hard</option>
+				</select>
+			</div>
+			
+		</div>
+		
+		<div class="row">
+			<label for="servings">Servings</label> 
+			<input type="number" class="form-control"
+				name="servings" placeholder="Servings" th:field="*{servings}" />
+		</div>
+		
+		<div class="row">
+			<!-- https://www.thymeleaf.org/doc/tutorials/2.1/usingthymeleaf.html#removing-template-fragments -->
+			<h5>Ingredients</h5>
+			<a class="btn btn-default" href="#" role="button">Edit</a>
+			<ul>
+				<li th:remove="all">1 teaspoon of olive oil</li>
+				<li th:remove="all">A pinch of salt</li>
+				<li th:each="ing : ${recipe.ingredients}" th:text="${ing.getAmount() + ing.getDescription()}"></li>
+			</ul>
+		</div>
+		
+		<div class="row">
+			<label for="directions">Directions</label>
+			<textarea rows="7" cols="160" th:field="*{directions}" placeholder="Write some directions to guide"></textarea>
+		</div>
+
+		<input type="submit" value="Save" />
+	</form>
+</div>
+</body>
+</html>

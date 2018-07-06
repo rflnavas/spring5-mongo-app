@@ -2,29 +2,27 @@ package guru.springframework.model;
 
 import java.math.BigDecimal;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 
-@Entity
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class Ingredient {
-	
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long id;
-	
-	@ManyToOne
-	private Recipe recipe;
+	private String id;
+	/*
+	 * Because of recipe has a reference to a collection of ingredients, each
+	 * ingredient points to the same recipe before and at the same time this same
+	 * recipe points to such ingredientes and so on. Thus, there is a cycle which 
+	 * never ends and provokes a StackOverFlowException
+	 */
+//	private Recipe recipe;
 	private String description;
 	private BigDecimal amount;
-	/*
-	 * Although it is implicit, I want to highlight it.
-	 */
-	@OneToOne(fetch=FetchType.EAGER)
+	@DBRef
 	private UnitOfMeasure unitOfMeasure;
 	
 	public Ingredient() {
@@ -37,50 +35,9 @@ public class Ingredient {
 		this.unitOfMeasure = unitOfMeasure;
 	}
 
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public BigDecimal getAmount() {
-		return amount;
-	}
-
-	public void setAmount(BigDecimal amount) {
-		this.amount = amount;
-	}
-	
-
-	public UnitOfMeasure getUnitOfMeasure() {
-		return unitOfMeasure;
-	}
-
-	public void setUnitOfMeasure(UnitOfMeasure unitOfMeasure) {
-		this.unitOfMeasure = unitOfMeasure;
-	}
-
-	public Recipe getRecipe() {
-		return recipe;
-	}
-
-	public void setRecipe(Recipe recipe) {
-		this.recipe = recipe;
-	}
-
 	@Override
 	public String toString() {
-		return "Ingredient [id=" + id + ", recipe=" + recipe + ", description=" + description + ", amount=" + amount
+		return "Ingredient [id=" + id + ", description=" + description + ", amount=" + amount
 				+ ", unitOfMeasure=" + unitOfMeasure + "]";
 	}
 	

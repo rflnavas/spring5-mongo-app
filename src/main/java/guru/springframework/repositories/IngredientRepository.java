@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import guru.springframework.model.Ingredient;
 
 @Repository
-public interface IngredientRepository extends CrudRepository<Ingredient, Long>{
+public interface IngredientRepository extends CrudRepository<Ingredient, String>{
 
 }

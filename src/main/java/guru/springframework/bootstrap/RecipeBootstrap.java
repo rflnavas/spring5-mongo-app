@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import guru.springframework.model.Category;
 import guru.springframework.model.Difficulty;
@@ -15,7 +16,9 @@ import guru.springframework.model.Notes;
 import guru.springframework.model.Recipe;
 import guru.springframework.model.Recipe.RecipeBuilder;
 import guru.springframework.model.UnitOfMeasure;
+import guru.springframework.repositories.CategoryRepository;
 import guru.springframework.repositories.IngredientRepository;
+import guru.springframework.repositories.UnitOfMeasureRepository;
 import guru.springframework.services.CategoryService;
 import guru.springframework.services.RecipeService;
 import guru.springframework.services.UnitOfMeasureService;
@@ -34,13 +37,23 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
 	CategoryService categoryService;
 	@Autowired
 	IngredientRepository ingredientRepository;
+	
+	CategoryRepository categoryRepository;
+	
+	UnitOfMeasureRepository unitOfMeasureRepository;
 
 	public RecipeBootstrap(UnitOfMeasureService unitOfMeasureService, RecipeService recipeService,
-			IngredientRepository ingredientRepository) {
+			CategoryService categoryService, IngredientRepository ingredientRepository,
+			CategoryRepository categoryRepository, UnitOfMeasureRepository unitOfMeasureRepository) {
+		super();
 		this.unitOfMeasureService = unitOfMeasureService;
 		this.recipeService = recipeService;
+		this.categoryService = categoryService;
 		this.ingredientRepository = ingredientRepository;
+		this.categoryRepository = categoryRepository;
+		this.unitOfMeasureRepository = unitOfMeasureRepository;
 	}
+
 
 	// private final UnitOfMeasureRepository unitOfMeasureRepository;
 	// private final RecipeRepository recipeRepository;
@@ -55,18 +68,69 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
 	// }
 	//
 	@Override
+	@Transactional
 	public void onApplicationEvent(ContextRefreshedEvent event) { // ApplicationEvent event
+		loadCategories();
+		loadUom();
 		createRecipes();
 	}
+	
+	private void loadCategories(){
+        Category cat1 = new Category();
+        cat1.setCategoryName("American");
+        categoryRepository.save(cat1);
+
+        Category cat2 = new Category();
+        cat2.setCategoryName("Italian");
+        categoryRepository.save(cat2);
+
+        Category cat3 = new Category();
+        cat3.setCategoryName("Mexican");
+        categoryRepository.save(cat3);
+
+        Category cat4 = new Category();
+        cat4.setCategoryName("Fast Food");
+        categoryRepository.save(cat4);
+    }
+
+    private void loadUom(){
+        UnitOfMeasure uom1 = new UnitOfMeasure();
+        uom1.setMeasure("Teaspoon");
+        unitOfMeasureRepository.save(uom1);
+
+        UnitOfMeasure uom2 = new UnitOfMeasure();
+        uom2.setMeasure("Tablespoon");
+        unitOfMeasureRepository.save(uom2);
+
+        UnitOfMeasure uom3 = new UnitOfMeasure();
+        uom3.setMeasure("Cup");
+        unitOfMeasureRepository.save(uom3);
+
+        UnitOfMeasure uom4 = new UnitOfMeasure();
+        uom4.setMeasure("Pinch");
+        unitOfMeasureRepository.save(uom4);
+
+        UnitOfMeasure uom5 = new UnitOfMeasure();
+        uom5.setMeasure("Ounce");
+        unitOfMeasureRepository.save(uom5);
+
+        UnitOfMeasure uom6 = new UnitOfMeasure();
+        uom6.setMeasure("Each");
+        unitOfMeasureRepository.save(uom6);
+
+        UnitOfMeasure uom7 = new UnitOfMeasure();
+        uom7.setMeasure("Pint");
+        unitOfMeasureRepository.save(uom7);
+
+        UnitOfMeasure uom8 = new UnitOfMeasure();
+        uom8.setMeasure("Dash");
+        unitOfMeasureRepository.save(uom8);
+    }
+
 
 	private void createRecipes() {
-		// System.out.println(unitOfMeasureService.count() + " Recipes");
-		// CollectionUtils.toStream(unitOfMeasureService.findAll(),
-		// false).forEach((x)->System.out.println(x));
-		UnitOfMeasure tableSpoon = unitOfMeasureService.getUnitOfMeasureByName("Table spoon").get(); // unitOfMeasure.getUnitOfMeasureByName("Table
-																										// spoon").get();
-		UnitOfMeasure teaSpoon = unitOfMeasureService.getUnitOfMeasureByName("Tea spoon").get();// unitOfMeasure.getUnitOfMeasureByName("Tea
-																								// spoon").get();
+		UnitOfMeasure tableSpoon = unitOfMeasureService.getUnitOfMeasureByName("Tablespoon").get();
+		UnitOfMeasure teaSpoon = unitOfMeasureService.getUnitOfMeasureByName("Teaspoon").get();
 		UnitOfMeasure cup = unitOfMeasureService.getUnitOfMeasureByName("Cup").get();
 		UnitOfMeasure pint = unitOfMeasureService.getUnitOfMeasureByName("Pint").get();
 		UnitOfMeasure each = unitOfMeasureService.getUnitOfMeasureByName("Each").get();
@@ -77,14 +141,8 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
 				.create();
 		Ingredient ing2 = IngredientBuilder.of().amount(1).description("dried oreganor").unitOfMeasure(teaSpoon)
 				.create();
-		// @SuppressWarnings("serial")
+	
 		Recipe guacRecipe = RecipeBuilder.of().description("Perfect Guacamole")
-				// .ingredients(new HashSet<Ingredient>() {
-				// {
-				// add(ing1);
-				// add(ing2);
-				// }
-				// })
 				.withIngredients(ing1, ing2)
 				.directions(
 						"1 Cut avocado, remove flesh: Cut the avocados in half. Remove seed. Score the inside of the avocado with a blunt knife and scoop out the flesh with a spoon"
